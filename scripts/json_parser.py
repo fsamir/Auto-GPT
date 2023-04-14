@@ -92,11 +92,13 @@ def fix_json(json_str: str, schema: str) -> str:
     result_string = call_ai_function(
         function_string, args, description_string, model=cfg.fast_llm_model
     )
-    logger.debug("------------ JSON FIX ATTEMPT ---------------")
-    logger.debug(f"Original JSON: {json_str}")
-    logger.debug("-----------")
-    logger.debug(f"Fixed JSON: {result_string}")
-    logger.debug("----------- END OF FIX ATTEMPT ----------------")
+    debug = False
+    if debug:
+        logger.debug("------------ JSON FIX ATTEMPT ---------------")
+        logger.debug(f"Original JSON: {json_str}")
+        logger.debug("-----------")
+        logger.debug(f"Fixed JSON: {result_string}")
+        logger.debug("----------- END OF FIX ATTEMPT ----------------")
 
     try:
         json.loads(result_string)  # just check the validity

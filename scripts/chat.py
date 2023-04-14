@@ -108,18 +108,21 @@ def chat_with_ai(
             tokens_remaining = token_limit - current_tokens_used
             # assert tokens_remaining >= 0, "Tokens remaining is negative. This should never happen, please submit a bug report at https://www.github.com/Torantulino/Auto-GPT"
 
-            # Debug print the current context
             logger.debug(f"Token limit: {token_limit}")
             logger.debug(f"Send Token Count: {current_tokens_used}")
             logger.debug(f"Tokens remaining for response: {tokens_remaining}")
-            logger.debug("------------ CONTEXT SENT TO AI ---------------")
-            for message in current_context:
-                # Skip printing the prompt
-                if message["role"] == "system" and message["content"] == prompt:
-                    continue
-                logger.debug(f"{message['role'].capitalize()}: {message['content']}")
-                logger.debug("")
-            logger.debug("----------- END OF CONTEXT ----------------")
+
+            log_ctxt = False
+            if log_ctxt:
+                # Debug print the current context
+                logger.debug("------------ CONTEXT SENT TO AI ---------------")
+                for message in current_context:
+                    # Skip printing the prompt
+                    if message["role"] == "system" and message["content"] == prompt:
+                        continue
+                    logger.debug(f"{message['role'].capitalize()}: {message['content']}")
+                    logger.debug("")
+                logger.debug("----------- END OF CONTEXT ----------------")
 
             # TODO: use a model defined elsewhere, so that model can contain temperature and other settings we care about
             assistant_reply = create_chat_completion(

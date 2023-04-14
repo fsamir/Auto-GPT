@@ -1,0 +1,11 @@
+When building a web scraper with Python and Playwright consider this information:
+
+    1. Prefer to target page eleents wth CSS selectors that target element IDs when possible.
+    2. If the page presents a CAPTCHA, you will need to solve it as part of the scraper. Learn how to do it file lessons/python/recaptchav2_captcha_solver.py
+
+
+Troubleshooting error messages:
+    1. When an error occurs, take a screenshot and save it to a file. This will help you debug the issue.
+    2. When an eror occurs, check if the page is not displaying a captcha challenge. If it does, improve the code to be able to solve it.
+    3. WHEN "playwright._impl._api_types.TimeoutError" occurs, do ot increase the timeout. Instead, choose a different CSS selector that targets the element that timed out.
+    4. "AttributeError: 'NoneType' object has no attribute 'fill'" means that the element you are trying to fill is not found. Check the CSS selector and make sure it targets the correct element.
