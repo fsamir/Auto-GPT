@@ -12,11 +12,15 @@ from file_operations import read_file, write_to_file, append_to_file, delete_fil
 from image_gen import generate_image
 from json_parser import fix_and_parse_json
 from memory import get_memory
+
+from docker_executor import DockerExecutor
 from nodejs_code_executor import NodeJsCodeExecutor
 from python_code_executor import PythonCodeExecutor
 
 nodejs_code_executor = NodeJsCodeExecutor()
 python_code_executor = PythonCodeExecutor()
+mocha_test_executor = DockerExecutor(NodeJsCodeExecutor.IMAGE, ['.js'])
+
 cfg = Config()
 
 
@@ -109,6 +113,8 @@ def execute_command(command_name, arguments):
             return python_code_executor.execute(arguments["file"])
         elif command_name == "execute_nodejs_file":
             return nodejs_code_executor.execute(arguments["file"])
+        elif command_name == "execute_mocha_test":
+            return mocha_test_executor.execute(arguments["file"])
         elif command_name == "generate_image":
             return generate_image(arguments["prompt"])
         elif command_name == "do_nothing":

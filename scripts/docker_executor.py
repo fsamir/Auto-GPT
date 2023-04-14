@@ -1,3 +1,4 @@
+import logging
 import os
 
 import docker
@@ -5,12 +6,11 @@ import docker
 
 class DockerExecutor:
 
-    def __init__(self, docker_image, command, supported_file_extensions=[]):
+    def __init__(self, docker_image, supported_file_extensions=[]):
         self.docker_image = docker_image
-        self.command = command
         self.supported_file_extensions = supported_file_extensions
 
-    def execute(self, file):
+    def execute(self, command, file):
         """Execute a file in a Docker container and return the output"""
         workspace_folder = "auto_gpt_workspace"
 
@@ -21,27 +21,23 @@ class DockerExecutor:
 
         file_path = os.path.join(workspace_folder, file)
 
-        if not os.path.isfile(file_path):
-            return f"Error: File '{file}' does not exist."
+        # if not os.path.isfile(file_path):
+        #     return f"Error: File '{file}' does not exist."
 
         try:
             client = docker.from_env()
-            # XXX: Do not load all env var or else it will crash the container run.
-            env_vars = {
-                'OPENAI_API_KEY': os.environ.get('OPENAI_API_KEY'),
-                'ANTICAPTCHA_KEY': os.environ.get('ANTICAPTCHA_KEY'),
-                'PINECONE_API_KEY': os.environ.get('PINECONE_API_KEY'),
-                'PINECONE_ENV': os.environ.get('PINECONE_ENV'),
-                'ELEVENLABS_API_KEY': os.environ.get('ELEVENLABS_API_KEY'),
-                'HUGGINGFACE_API_TOKEN': os.environ.get('HUGGINGFACE_API_TOKEN')
-            }
+
+            env_vars = self.populate_env_vars()
+
+            absolute_path = os.path.abspath(workspace_folder)
+            logging.debug(f"Running container with image '{self.docker_image}' and command '{command} on workspace '{absolute_path}'")
 
             # https://docker-py.readthedocs.io/en/stable/containers.html
             container = client.containers.run(
                 self.docker_image,
-                f'{self.command} {file}',
+                command,
                 volumes={
-                    os.path.abspath(workspace_folder): {
+                    absolute_path: {
                         'bind': '/workspace',
                         'mode': 'rw'}
                 },
@@ -63,6 +59,17 @@ class DockerExecutor:
 
         except Exception as e:
             return f"Error: {str(e)}"
+
+    def populate_env_vars(self):
+        # XXX: Do not load all env var or else it will crash the container run.
+        return {
+            'OPENAI_API_KEY': os.environ.get('OPENAI_API_KEY'),
+            'ANTICAPTCHA_KEY': os.environ.get('ANTICAPTCHA_KEY'),
+            'PINECONE_API_KEY': os.environ.get('PINECONE_API_KEY'),
+            'PINECONE_ENV': os.environ.get('PINECONE_ENV'),
+            'ELEVENLABS_API_KEY': os.environ.get('ELEVENLABS_API_KEY'),
+            'HUGGINGFACE_API_TOKEN': os.environ.get('HUGGINGFACE_API_TOKEN')
+        }
 
     def check_string_end(self, string_value, endings_list):
         for ending in endings_list:
