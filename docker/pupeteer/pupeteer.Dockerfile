@@ -32,14 +32,13 @@ RUN #. ~/.profile
 
 
 ENV NODE_VERSION=16.13.0
-RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 ENV NVM_DIR=/home/seluser/.nvm
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
 RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
 RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
 ENV PATH="/home/seluser/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-RUN node --version
-RUN npm --version
+
 
 WORKDIR /app
 RUN npm install -g  puppeteer@^19.8.5 mocha@10.2.0 should@13.2.3
@@ -50,6 +49,3 @@ RUN npm install
 
 COPY --chown=seluser src/ src/
 
-#COPY --chown=seluser ./bash-exec.sh ./
-#RUN chmod +x ./bash-exec.sh
-#ENTRYPOINT ["./bash-exec.sh"]
