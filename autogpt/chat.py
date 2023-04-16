@@ -140,7 +140,7 @@ def chat_with_ai(
             logger.debug(f"Send Token Count: {current_tokens_used}")
             logger.debug(f"Tokens remaining for response: {tokens_remaining}")
 
-            log_ctxt = False
+            log_ctxt = True
             if log_ctxt:
                 # Debug print the current context
                 logger.debug("------------ CONTEXT SENT TO AI ---------------")

@@ -22,12 +22,24 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 #Force all commans to use bash - nedded for nvm
 SHELL ["/bin/bash", "-i", "-c"]
-#RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+#Default user from selenoum image
+USER seluser
+
+#ENV NODE_VERSION=16.13.0
+RUN #wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+RUN #. ~/.profile
+
 
 ENV NODE_VERSION=16.13.0
-RUN wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-
-USER seluser
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
+ENV NVM_DIR=/home/seluser/.nvm
+RUN . "$NVM_DIR/nvm.sh" && nvm install ${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm use v${NODE_VERSION}
+RUN . "$NVM_DIR/nvm.sh" && nvm alias default v${NODE_VERSION}
+ENV PATH="/home/seluser/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
+RUN node --version
+RUN npm --version
 
 WORKDIR /app
 RUN npm install -g  puppeteer@^19.8.5 mocha@10.2.0 should@13.2.3
@@ -38,7 +50,6 @@ RUN npm install
 
 COPY --chown=seluser src/ src/
 
-
-
-#ENTRYPOINT ["/bin/bash", "-i", "-c"]
-#ENTRYPOINT ["/bin/bash"]
+#COPY --chown=seluser ./bash-exec.sh ./
+#RUN chmod +x ./bash-exec.sh
+#ENTRYPOINT ["./bash-exec.sh"]

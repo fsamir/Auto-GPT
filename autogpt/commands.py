@@ -14,15 +14,17 @@ from duckduckgo_search import ddg
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from autogpt.web import browse_website
-cfg = Config()
 
-from docker_executor import DockerExecutor
-from nodejs_code_executor import NodeJsCodeExecutor
-from python_code_executor import PythonCodeExecutor
+from autogpt.docker_executor import DockerExecutor
+from autogpt.nodejs_code_executor import NodeJsCodeExecutor
+from autogpt.python_code_executor import PythonCodeExecutor
 
 nodejs_code_executor = NodeJsCodeExecutor()
 python_code_executor = PythonCodeExecutor()
 mocha_test_executor = DockerExecutor(NodeJsCodeExecutor.IMAGE, ['.js'])
+
+cfg = Config()
+
 
 
 def is_valid_int(value):

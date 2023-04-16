@@ -14,17 +14,18 @@ docker build --build-arg base_image=seleniarm/standalone-chromium:103.0 \
 docker rm -f puppeteer || true
 #Test Image
 #https://pptr.dev/guides/docker
-docker run -it \
+docker run -it --rm \
            --memory=1200M \
            --shm-size 1G \
            --name puppeteer \
            -v /Users/franklin/projects/learn/Auto-GPT/auto_gpt_workspace/:/worspace \
            fsamir/nodejs-puppeteer:dev \
+           npm run test
+#           npm --version
+#           /bin/bash
+#           bash -i -c 'node src/books-scraper.js'
 #           ' mocha src/delaware-sos-scraper-tests.js --reporter spec'
-           /bin/bash
 
-#           bash -i -c 'npm run test'
 #            'npm run test'
 #           node books-scraper.js
-#           bash -i -c 'node books-scraper.js'
 
