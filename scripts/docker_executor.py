@@ -21,8 +21,8 @@ class DockerExecutor:
 
         file_path = os.path.join(workspace_folder, file)
 
-        if not os.path.isfile(file_path):
-            return f"Error: File '{file}' does not exist."
+        # if not os.path.isfile(file_path):
+        #     return f"Error: File '{file}' does not exist."
 
         try:
             client = docker.from_env()

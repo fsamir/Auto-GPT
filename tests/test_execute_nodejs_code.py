@@ -7,16 +7,16 @@ from nodejs_code_executor import NodeJsCodeExecutor
 nodejs_code_executor = NodeJsCodeExecutor()
 
 def test_execute_nodejs_file():
-    # list_json = 'auto_gpt_workspace/book_list.json'
-    # if os.path.isfile(list_json):
-    #     os.remove(list_json)
 
     # XXX: These files are mounted in the docker container
-    file_name = "nodejs/example-scraper.js"
-    # logs = nodejs_code_executor.execute(f"'node {file_name}'", file_name)
-    logs = nodejs_code_executor.execute(f"node --version", file_name)
-    books = json.loads(logs)
+    file_name = "nodejs/books-scraper-run.js"
+    logs = nodejs_code_executor.execute("npm install --prefix ./nodejs/", file_name)
+    # print(f"Logs: {logs}")
+    logs = nodejs_code_executor.execute(f"node {file_name}", file_name)
 
+    print(f"Logs: {logs}")
+
+    books = json.loads(logs)
     print(f"Books: {books}")
     assert len(books) == 20
 

@@ -1,9 +1,9 @@
 const assert = require('assert');
 const { scrape } = require('./books-scraper.js');
 
-describe('scraper', () => {
+describe('Books scraper', () => {
 
-    it('should scrape book titles from https://books.toscrape.com', async () => {
+    it('Should scrape book titles from https://books.toscrape.com', async () => {
         const bookTitles = await scrape();
         assert(Array.isArray(bookTitles));
         assert(bookTitles.length > 0);

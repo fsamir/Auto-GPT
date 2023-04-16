@@ -26,11 +26,6 @@ SHELL ["/bin/bash", "-i", "-c"]
 #Default user from selenoum image
 USER seluser
 
-#ENV NODE_VERSION=16.13.0
-RUN #wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-RUN #. ~/.profile
-
-
 ENV NODE_VERSION=16.13.0
 ENV NVM_DIR=/home/seluser/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
@@ -41,7 +36,12 @@ ENV PATH="/home/seluser/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 
 
 WORKDIR /app
-RUN npm install -g  puppeteer@^19.8.5 mocha@10.2.0 should@13.2.3
+
+RUN npm install -g puppeteer@^19.8.5 mocha@10.2.0 should@13.2.3
+
+COPY --chown=seluser ./bash-exec.sh /opt/
+RUN chmod +x /opt/bash-exec.sh
+ENTRYPOINT ["/opt/bash-exec.sh"]
 
 COPY --chown=seluser package.json .
 #COPY --chown=seluser package-lock.json .

@@ -21,8 +21,8 @@ docker run -it --rm \
            -v /Users/franklin/projects/learn/Auto-GPT/auto_gpt_workspace/:/worspace \
            fsamir/nodejs-puppeteer:dev \
            npm run test
-#           npm --version
 #           /bin/bash
+#           npm --version
 #           bash -i -c 'node src/books-scraper.js'
 #           ' mocha src/delaware-sos-scraper-tests.js --reporter spec'
 
