@@ -1,0 +1,8 @@
+#Status: Working
+ai_name: NodeJS
+ai_role: Executes Javascript code
+ai_continue: True
+
+ai_goals:
+  - Execute Nodejs file at 'nodejs/books-scraper-run.js' and save the results in a json file.
+  - Shut yourself down.

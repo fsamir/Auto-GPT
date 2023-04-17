@@ -1,22 +1,29 @@
-##Status: Draft
-#ai_name: NodeJS
-#ai_role: Executes Javascript code
-#ai_continue: True
-#
-#ai_goals:
-#  - Execute delaware-sos-scraper-tests.js
-##  - Read file example-scraper.js for an example of how to scrape a website with nodejs and puppeteer.
-##  - Create a similar code to submit the form at https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx, scrape the results in the list, and return the results as a JSON object.
-##  - Execute the script and save the output to a file named delaware-sos.json.
-##  - "Write an unit test for the script using NodeJS and Mocha. Import delaware-sos-scraper.js and test the function that scrapes the website for the following entity names: [HSBC]."
-#
-##  - Read file delaware-sos-scraper.js and delaware-sos-scraper-tests.js
-##  - Improve both files to make sure a scrape for the entityname 'HSBC' returns a list of results in json.
-##  - Make sure that all tests pass.
-#
-#  - "Execute Mocha test on file delaware-sos-scraper-tests.js"
-#  - Shut yourself down.
+ai_skip_reprompt: True
 
+#Status: Draft
+ai_name: NodeJS
+ai_role: Executes Javascript code
+ai_continue: True
+
+ai_goals:
+#  - "Context: The Nodejs code at 'nodejs/books-scraper.js' scrapes the title of the Books at https://books.toscrape.com/. For every code file you write, add the disclaimer as a comment: Author: AI"
+#  - Improve the Nodejs at 'nodejs/books-scraper.js' to scrape the price, title, star rating and stock status of the books. Save the new file to 'nodejs/books-scraper-v2.js'
+#  - Write test for 'nodejs/books-scraper-v2.js' and make sure it returns a list with 20 books that each one has attributes listed earlier.
+  - Execute mocha test at nodejs/books-scraper-v2.test.js and improve it to make sure all tests pass.
+
+#####################################################
+  - Read file example-scraper.js for an example of how to scrape a website with nodejs and puppeteer.
+  - Create a similar code to submit the form at https://icis.corp.delaware.gov/Ecorp/EntitySearch/NameSearch.aspx, scrape the results in the list, and return the results as a JSON object.
+  - Execute the script and save the output to a file named delaware-sos.json.
+  - "Write an unit test for the script using NodeJS and Mocha. Import delaware-sos-scraper.js and test the function that scrapes the website for the following entity names: [HSBC]."
+#  - Read file delaware-sos-scraper.js and delaware-sos-scraper-tests.js
+#  - Improve both files to make sure a scrape for the entityname 'HSBC' returns a list of results in json.
+#  - Make sure that all tests pass.
+
+#  - "Execute Mocha test on file delaware-sos-scraper-tests.js"
+  - Shut yourself down.
+
+############################################################
 #AI Learns Python and Playright programming from an sample code.
 #ai_name: Scraping coder
 #ai_role: An AI that writes code.
@@ -30,14 +37,15 @@
 #  - Save the result of the scraper to a file.
 #  - Shut yourself down.
 
-ai_name: Scraping coder
-ai_role: An AI that writes code.
-ai_continue: True
-
-ai_goals:
-  - Learn from files lessons/python/python_playright_scraper_lessons.txt
-  - Learn from files lessons/python/books_scraper.py and lessons/groovy/ORSOSSearchResultsPageScraper.groovy
-  - Convert the code at lessons/groovy/ORSOSSearchResultsPageScraper.groovy from Groovy to Python.
-  - Save the code to a file.
-  - Save the result of the scraper to a file.
-  - Shut yourself down.
+############################################################
+#ai_name: Scraping coder
+#ai_role: An AI that writes code.
+#ai_continue: True
+#
+#ai_goals:
+#  - Learn from files lessons/python/python_playright_scraper_lessons.txt
+#  - Learn from files lessons/python/books_scraper.py and lessons/groovy/ORSOSSearchResultsPageScraper.groovy
+#  - Convert the code at lessons/groovy/ORSOSSearchResultsPageScraper.groovy from Groovy to Python.
+#  - Save the code to a file.
+#  - Save the result of the scraper to a file.
+#  - Shut yourself down.

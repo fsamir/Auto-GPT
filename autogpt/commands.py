@@ -1,27 +1,24 @@
-from autogpt import browse
-import json
-from autogpt.memory import get_memory
 import datetime
+import json
+
+from duckduckgo_search import ddg
+
 import autogpt.agent_manager as agents
+import autogpt.ai_functions as ai
+from autogpt import browse
 from autogpt import speak
 from autogpt.config import Config
-import autogpt.ai_functions as ai
-from autogpt.file_operations import read_file, write_to_file, append_to_file, delete_file, search_files
 from autogpt.execute_code import execute_python_file, execute_shell
-from autogpt.json_parser import fix_and_parse_json
+from autogpt.file_operations import read_file, write_to_file, append_to_file, delete_file, search_files
 from autogpt.image_gen import generate_image
-from duckduckgo_search import ddg
-from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from autogpt.web import browse_website
-
-from autogpt.docker_executor import DockerExecutor
+from autogpt.json_parser import fix_and_parse_json
+from autogpt.memory import get_memory
 from autogpt.nodejs_code_executor import NodeJsCodeExecutor
 from autogpt.python_code_executor import PythonCodeExecutor
+from autogpt.web import browse_website
 
 nodejs_code_executor = NodeJsCodeExecutor()
 python_code_executor = PythonCodeExecutor()
-mocha_test_executor = DockerExecutor(NodeJsCodeExecutor.IMAGE, ['.js'])
 
 cfg = Config()
 
@@ -122,7 +119,7 @@ def execute_command(command_name, arguments):
         elif command_name == "execute_nodejs_file":
             return nodejs_code_executor.execute(arguments["file"])
         elif command_name == "execute_mocha_test":
-            return mocha_test_executor.execute(arguments["file"])
+            return nodejs_code_executor.execute(arguments["file"], f"mocha {arguments['file']} --reporter spec --timeout 30000")
         elif command_name == "generate_image":
             return generate_image(arguments["prompt"])
         elif command_name == "do_nothing":
@@ -151,6 +148,7 @@ def google_search(query, num_results=8):
 
     return json.dumps(search_results, ensure_ascii=False, indent=4)
 
+
 def google_official_search(query, num_results=8):
     """Return the results of a google search using the official Google API"""
     import json
@@ -169,8 +167,8 @@ def google_official_search(query, num_results=8):
         # Send the search query and retrieve the results
         result = (
             service.cse()
-            .list(q=query, cx=custom_search_engine_id, num=num_results)
-            .execute()
+                .list(q=query, cx=custom_search_engine_id, num=num_results)
+                .execute()
         )
 
         # Extract the search result items from the response
@@ -185,7 +183,7 @@ def google_official_search(query, num_results=8):
 
         # Check if the error is related to an invalid or missing API key
         if error_details.get("error", {}).get(
-            "code"
+                "code"
         ) == 403 and "invalid API key" in error_details.get("error", {}).get(
             "message", ""
         ):

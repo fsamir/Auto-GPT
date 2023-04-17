@@ -1,11 +1,8 @@
 import argparse
 import json
 import logging
-import random
-import time
 import traceback
 
-import yaml
 from colorama import Fore, Style
 
 from autogpt import chat
@@ -16,7 +13,6 @@ from autogpt.config import Config
 from autogpt.json_parser import fix_and_parse_json
 from autogpt.logger import logger
 from autogpt.memory import get_memory, get_supported_memory_backends
-from autogpt.prompt import get_prompt
 from autogpt.spinner import Spinner
 
 cfg = Config()
@@ -224,7 +220,7 @@ def prompt_user():
     print("Enter nothing to load defaults, enter nothing when finished.", flush=True)
     ai_goals = []
     for i in range(5):
-        ai_goal = utils.clean_input(f"{Fore.LIGHTBLUE_EX}Goal{Style.RESET_ALL} {i+1}: ")
+        ai_goal = utils.clean_input(f"{Fore.LIGHTBLUE_EX}Goal{Style.RESET_ALL} {i + 1}: ")
         if ai_goal == "":
             break
         ai_goals.append(ai_goal)
@@ -395,13 +391,13 @@ class Agent:
     """
 
     def __init__(
-        self,
-        ai_name,
-        memory,
-        full_message_history,
-        next_action_count,
-        prompt,
-        user_input,
+            self,
+            ai_name,
+            memory,
+            full_message_history,
+            next_action_count,
+            prompt,
+            user_input,
     ):
         self.ai_name = ai_name
         self.memory = memory
@@ -417,9 +413,9 @@ class Agent:
             # Discontinue if continuous limit is reached
             loop_count += 1
             if (
-                cfg.continuous_mode
-                and cfg.continuous_limit > 0
-                and loop_count > cfg.continuous_limit
+                    cfg.continuous_mode
+                    and cfg.continuous_limit > 0
+                    and loop_count > cfg.continuous_limit
             ):
                 logger.typewriter_log(
                     "Continuous Limit Reached: ", Fore.YELLOW, f"{cfg.continuous_limit}"
@@ -510,7 +506,7 @@ class Agent:
             # Execute command
             if command_name is not None and command_name.lower().startswith("error"):
                 result = (
-                    f"Command {command_name} threw the following error: " + arguments
+                        f"Command {command_name} threw the following error: " + arguments
                 )
             elif command_name == "human_feedback":
                 result = f"Human feedback: {self.user_input}"

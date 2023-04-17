@@ -38,7 +38,7 @@ class Config(metaclass=Singleton):
         self.continuous_mode = False
         self.continuous_limit = 0
         self.speak_mode = False
-        self.skip_reprompt = False
+        self.skip_reprompt = True
 
         self.ai_settings_file = os.getenv("AI_SETTINGS_FILE", "ai_settings.yaml")
         self.fast_llm_model = os.getenv("FAST_LLM_MODEL", "gpt-3.5-turbo")
@@ -52,7 +52,7 @@ class Config(metaclass=Singleton):
         self.temperature = float(os.getenv("TEMPERATURE", "1"))
         self.use_azure = os.getenv("USE_AZURE") == "True"
         self.execute_local_commands = (
-            os.getenv("EXECUTE_LOCAL_COMMANDS", "False") == "True"
+                os.getenv("EXECUTE_LOCAL_COMMANDS", "False") == "True"
         )
 
         if self.use_azure:
@@ -96,6 +96,7 @@ class Config(metaclass=Singleton):
         self.memory_backend = os.getenv("MEMORY_BACKEND", "local")
         # Initialize the OpenAI API client
         openai.api_key = self.openai_api_key
+        print("OpenAI API Key: ", openai.api_key)
 
     def get_azure_deployment_id_for_model(self, model: str) -> str:
         """

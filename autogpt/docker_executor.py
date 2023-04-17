@@ -10,19 +10,22 @@ class DockerExecutor:
         self.docker_image = docker_image
         self.supported_file_extensions = supported_file_extensions
 
-    def execute(self, command, file):
+    def execute(self, file, command: str = None):
         """Execute a file in a Docker container and return the output"""
         workspace_folder = "auto_gpt_workspace"
 
         print(f"Executing file '{file}' in workspace '{workspace_folder}'")
+
+        if command is None:
+            return "Error: Command is required."
 
         if not self.check_string_end(file, self.supported_file_extensions):
             return f"Error: Invalid file type. Only {self.supported_file_extensions} files are allowed."
 
         file_path = os.path.join(workspace_folder, file)
 
-        if not os.path.isfile(file_path):
-            return f"Error: File '{file}' does not exist."
+        # if not os.path.isfile(file_path):
+        #     return f"Error: File '{file}' does not exist."
 
         try:
             client = docker.from_env()
@@ -30,7 +33,8 @@ class DockerExecutor:
             env_vars = self.populate_env_vars()
 
             absolute_path = os.path.abspath(workspace_folder)
-            logging.debug(f"Running container with image '{self.docker_image}' and command '{command} on workspace '{absolute_path}'")
+            logging.debug(
+                f"Running container with image '{self.docker_image}' and command '{command} on workspace '{absolute_path}'")
 
             # https://docker-py.readthedocs.io/en/stable/containers.html
             container = client.containers.run(
